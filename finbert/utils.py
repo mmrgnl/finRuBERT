@@ -66,7 +66,7 @@ class DataProcessor(object):
     @classmethod
     def _read_tsv(cls, input_file):
         """Reads a tab separated value file."""
-        with open(input_file, "r") as f:
+        with open(input_file, "r", encoding="utf-8") as f:
             reader = csv.reader(f, delimiter="\t")
             lines = []
             for line in reader:
@@ -95,6 +95,8 @@ class FinSentProcessor(DataProcessor):
         return self._create_examples(self._read_tsv(os.path.join(data_dir, (phase + ".csv"))), phase)
 
     def get_labels(self):
+        # Используем английские метки для совместимости с оригинальным FinBERT
+        # В русскоязычных данных: positive=позитивный, negative=негативный, neutral=нейтральный
         return ["positive", "negative", "neutral"]
 
     def _create_examples(self, lines, set_type):
